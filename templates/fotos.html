@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fotos</title>
+    <style>
+        body {
+            background: #0a0a0a;
+            color: #00ff00;
+            font-family: monospace;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #00ff00;
+            text-shadow: 2px 2px 4px rgba(0, 255, 0, 0.5);
+            border-bottom: 2px solid #00ff00;
+            padding-bottom: 10px;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+        img {
+            width: 100%;
+            border: 1px solid #00ff00;
+            transition: transform 0.3s ease;
+        }
+        img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+        }
+        button, a {
+            background: #000;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        button:hover, a:hover {
+            background: #00ff00;
+            color: #000;
+            box-shadow: 0 0 10px #00ff00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fotos Capturadas</h1>
+        <div class="gallery">
+            {% for foto in fotos %}
+            <img src="{{ url_for('static', filename='../uploads/fotos/' + foto) }}" alt="Foto">
+            {% endfor %}
+        </div>
+        <button onclick="window.location.reload()">Carregar Novas Fotos</button>
+        <p><a href="/">Voltar para o Painel</a></p>
+    </div>
+</body>
+</html>
