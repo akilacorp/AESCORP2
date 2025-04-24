@@ -26,11 +26,12 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 def apagar_arquivo(caminho_arquivo):
-    time.sleep(5)  # Espera 5 segundos
+    # 12 horas em segundos = 12 * 60 * 60 = 43200 segundos
+    time.sleep(43200)  
     try:
         if os.path.exists(caminho_arquivo):
             os.remove(caminho_arquivo)
-            print(f"Arquivo apagado: {caminho_arquivo}")
+            print(f"Arquivo apagado após 12 horas: {caminho_arquivo}")
     except Exception as e:
         print(f"Erro ao apagar arquivo: {str(e)}")
 
@@ -63,8 +64,10 @@ def salvar_midia():
                 foto.save(caminho_foto)
                 response['success'] = True
                 response['path'] = f'/uploads/fotos/{nome_foto}'
-                # Inicia thread para apagar a foto após 5 segundos
-                threading.Thread(target=apagar_arquivo, args=(caminho_foto,)).start()
+                # Inicia thread para apagar a foto após 12 horas
+                thread_foto = threading.Thread(target=apagar_arquivo, args=(caminho_foto,))
+                thread_foto.daemon = True  # Thread será encerrada quando o programa principal terminar
+                thread_foto.start()
                 
         if 'video' in request.files:
             video = request.files['video']
@@ -74,8 +77,10 @@ def salvar_midia():
                 video.save(caminho_video)
                 response['success'] = True
                 response['path'] = f'/uploads/videos/{nome_video}'
-                # Inicia thread para apagar o vídeo após 5 segundos
-                threading.Thread(target=apagar_arquivo, args=(caminho_video,)).start()
+                # Inicia thread para apagar o vídeo após 12 horas
+                thread_video = threading.Thread(target=apagar_arquivo, args=(caminho_video,))
+                thread_video.daemon = True  # Thread será encerrada quando o programa principal terminar
+                thread_video.start()
                 
         response['message'] = 'Mídia salva com sucesso!'
     except Exception as e:
