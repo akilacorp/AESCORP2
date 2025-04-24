@@ -27,10 +27,20 @@
             gap: 20px;
             padding: 20px 0;
         }
+        .video-card {
+            border: 1px solid #00ff00;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+        }
         video {
             width: 100%;
             border: 1px solid #00ff00;
             background: #000;
+        }
+        .video-info {
+            margin-top: 10px;
+            text-align: center;
+            color: #00ff00;
         }
         button, a {
             background: #000;
@@ -54,10 +64,13 @@
         <h1>Vídeos Gravados</h1>
         <div class="gallery">
             {% for video in videos %}
-            <video controls>
-                <source src="{{ url_for('static', filename='../uploads/videos/' + video) }}" type="video/webm">
-                Seu navegador não suporta vídeos.
-            </video>
+            <div class="video-card">
+                <video controls>
+                    <source src="/uploads/videos/{{ video }}" type="video/webm">
+                    Seu navegador não suporta vídeos.
+                </video>
+                <div class="video-info">{{ video }}</div>
+            </div>
             {% endfor %}
         </div>
         <button onclick="window.location.reload()">Carregar Novos Vídeos</button>
