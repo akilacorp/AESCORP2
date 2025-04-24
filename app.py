@@ -53,7 +53,7 @@ def video_file(filename):
 
 @app.route('/')
 def index():
-    link_pagina_fake = url_for('pagina_fake')
+    link_pagina_fake = url_for('index')
     return render_template('index.html', link_pagina_fake=link_pagina_fake)
 
 @app.route('/fake')
