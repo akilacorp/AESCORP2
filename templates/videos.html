@@ -37,11 +37,6 @@
             height: auto;
             margin-bottom: 10px;
         }
-        .video-name {
-            color: #00ff00;
-            text-align: center;
-            margin: 10px 0;
-        }
         .button {
             display: inline-block;
             padding: 10px 20px;
@@ -51,24 +46,25 @@
             text-decoration: none;
             margin: 10px;
             cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
         }
         .button:hover {
             background: #00ff00;
             color: #000;
+            box-shadow: 0 0 10px #00ff00;
         }
         .controls {
             text-align: center;
             margin: 20px 0;
         }
-        .upload-form {
+        .download-btn {
+            width: 100%;
             text-align: center;
-            margin: 20px 0;
-            padding: 20px;
-            border: 1px solid #00ff00;
-            border-radius: 5px;
+            margin: 5px 0;
         }
-        .file-input {
-            margin: 10px 0;
+        .download-btn .button {
+            width: 80%;
+            margin: 0;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -76,13 +72,6 @@
 <body>
     <div class="container">
         <h1>Vídeos Hackeados</h1>
-        
-        <div class="upload-form">
-            <form action="/upload_video" method="post" enctype="multipart/form-data">
-                <input type="file" name="video" accept="video/*" class="file-input" required>
-                <button type="submit" class="button">Enviar Vídeo</button>
-            </form>
-        </div>
 
         <div class="gallery">
             {% for video in videos %}
@@ -91,7 +80,11 @@
                     <source src="/uploads/videos/{{ video }}" type="video/mp4">
                     Seu navegador não suporta o elemento de vídeo.
                 </video>
-                <div class="video-name">{{ video }}</div>
+                <div class="download-btn">
+                    <a href="/uploads/videos/{{ video }}" download class="button">
+                        DOWNLOAD 📥
+                    </a>
+                </div>
             </div>
             {% endfor %}
         </div>
