@@ -27,14 +27,25 @@
             gap: 20px;
             padding: 20px 0;
         }
+        .photo-card {
+            border: 1px solid #00ff00;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+        }
         img {
             width: 100%;
+            height: auto;
             border: 1px solid #00ff00;
             transition: transform 0.3s ease;
         }
         img:hover {
             transform: scale(1.05);
             box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+        }
+        .photo-info {
+            margin-top: 10px;
+            text-align: center;
+            color: #00ff00;
         }
         button, a {
             background: #000;
@@ -58,7 +69,10 @@
         <h1>Fotos Capturadas</h1>
         <div class="gallery">
             {% for foto in fotos %}
-            <img src="{{ url_for('static', filename='../uploads/fotos/' + foto) }}" alt="Foto">
+            <div class="photo-card">
+                <img src="/uploads/fotos/{{ foto }}" alt="{{ foto }}">
+                <div class="photo-info">{{ foto }}</div>
+            </div>
             {% endfor %}
         </div>
         <button onclick="window.location.reload()">Carregar Novas Fotos</button>
