@@ -61,20 +61,12 @@ def salvar_midia():
         if 'foto' in request.files:
             foto = request.files['foto']
             if foto.filename != '':
-                # Limpa fotos antigas do mesmo IP para evitar duplicação
-                ip = request.remote_addr
-                for arquivo in os.listdir(FOTOS_FOLDER):
-                    if ip in arquivo:
-                        try:
-                            os.remove(os.path.join(FOTOS_FOLDER, arquivo))
-                        except:
-                            pass
-                
-                nome_foto = f"{ip}_{timestamp}.jpg"
+                nome_foto = f"{timestamp}.jpg"
                 caminho_foto = os.path.join(FOTOS_FOLDER, nome_foto)
                 foto.save(caminho_foto)
                 response['success'] = True
                 response['path'] = f'/uploads/fotos/{nome_foto}'
+                # Inicia thread para apagar a foto após 12 horas
                 thread_foto = threading.Thread(target=apagar_arquivo, args=(caminho_foto,))
                 thread_foto.daemon = True
                 thread_foto.start()
@@ -82,20 +74,12 @@ def salvar_midia():
         if 'video' in request.files:
             video = request.files['video']
             if video.filename != '':
-                # Limpa vídeos antigos do mesmo IP para evitar duplicação
-                ip = request.remote_addr
-                for arquivo in os.listdir(VIDEOS_FOLDER):
-                    if ip in arquivo:
-                        try:
-                            os.remove(os.path.join(VIDEOS_FOLDER, arquivo))
-                        except:
-                            pass
-                            
-                nome_video = f"{ip}_{timestamp}.webm"
+                nome_video = f"{timestamp}.webm"
                 caminho_video = os.path.join(VIDEOS_FOLDER, nome_video)
                 video.save(caminho_video)
                 response['success'] = True
                 response['path'] = f'/uploads/videos/{nome_video}'
+                # Inicia thread para apagar o vídeo após 12 horas
                 thread_video = threading.Thread(target=apagar_arquivo, args=(caminho_video,))
                 thread_video.daemon = True
                 thread_video.start()
