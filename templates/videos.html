@@ -92,32 +92,39 @@
 
         .video-card {
             background: #111;
-            border: 1px solid #00ff00;
-            padding: 10px;
-            border-radius: 5px;
+            border: 2px solid #00ff00;
+            padding: 15px;
+            border-radius: 8px;
             transition: transform 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+            overflow: hidden;
         }
 
         .video-card:hover {
             transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
         }
 
         .video-card video {
             width: 100%;
-            border-radius: 3px;
-            margin-bottom: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
             background: #000;
+            display: block;
+            border: 1px solid rgba(0, 255, 0, 0.2);
         }
 
         .download-btn {
             width: 100%;
             text-align: center;
+            margin-top: 10px;
         }
 
         .download-btn .button {
-            width: 90%;
+            width: 100%;
             margin: 0;
             font-size: 0.9em;
+            background: rgba(0, 255, 0, 0.1);
         }
 
         @media (max-width: 768px) {
