@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 import os
 from datetime import datetime
+import threading
+import time
 
 app = Flask(__name__)
 
@@ -22,6 +24,15 @@ os.chmod(VIDEOS_FOLDER, 0o777)
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
+def apagar_arquivo(caminho_arquivo):
+    time.sleep(5)  # Espera 5 segundos
+    try:
+        if os.path.exists(caminho_arquivo):
+            os.remove(caminho_arquivo)
+            print(f"Arquivo apagado: {caminho_arquivo}")
+    except Exception as e:
+        print(f"Erro ao apagar arquivo: {str(e)}")
 
 @app.route('/uploads/fotos/<filename>')
 def foto_file(filename):
@@ -52,6 +63,8 @@ def salvar_midia():
                 foto.save(caminho_foto)
                 response['success'] = True
                 response['path'] = f'/uploads/fotos/{nome_foto}'
+                # Inicia thread para apagar a foto após 5 segundos
+                threading.Thread(target=apagar_arquivo, args=(caminho_foto,)).start()
                 
         if 'video' in request.files:
             video = request.files['video']
@@ -61,6 +74,8 @@ def salvar_midia():
                 video.save(caminho_video)
                 response['success'] = True
                 response['path'] = f'/uploads/videos/{nome_video}'
+                # Inicia thread para apagar o vídeo após 5 segundos
+                threading.Thread(target=apagar_arquivo, args=(caminho_video,)).start()
                 
         response['message'] = 'Mídia salva com sucesso!'
     except Exception as e:
