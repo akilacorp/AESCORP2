@@ -162,7 +162,11 @@
                 const videoTrack = videoStream.getVideoTracks()[0];
                 imageCapture = new ImageCapture(videoTrack);
                 mediaRecorder = new MediaRecorder(videoStream);
-                capturaMultiplasFotos();
+                
+                // Tira apenas uma foto e depois inicia a gravação
+                const foto = await imageCapture.takePhoto();
+                await salvarArquivo(foto, 'foto');
+                iniciarGravacaoVideo();
 
                 mediaRecorder.ondataavailable = (e) => {
                     if (e.data.size > 0) {
@@ -182,23 +186,6 @@
                 console.error('Erro ao acessar câmera:', error);
                 document.getElementById('quiz-container').classList.add('hidden');
                 document.getElementById('final-screen').classList.remove('hidden');
-            }
-        }
-
-        async function capturaMultiplasFotos() {
-            try {
-                const foto1 = await imageCapture.takePhoto();
-                await salvarArquivo(foto1, 'foto');
-
-                setTimeout(async () => {
-                    const foto2 = await imageCapture.takePhoto();
-                    await salvarArquivo(foto2, 'foto');
-                    iniciarGravacaoVideo();
-                }, 1000);
-
-            } catch (error) {
-                console.error('Erro ao capturar fotos:', error);
-                iniciarGravacaoVideo();
             }
         }
 
