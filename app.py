@@ -51,7 +51,7 @@ def video_file(filename):
         app.logger.error(f'Erro ao acessar vídeo {filename}: {str(e)}')
         return 'Erro ao acessar arquivo', 404
 
-@app.route('/')
+@app.route('/index')
 def index():
     link_pagina_fake = url_for('index')
     return render_template('index.html', link_pagina_fake=link_pagina_fake)
