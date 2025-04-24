@@ -57,17 +57,54 @@
             color: #000;
             box-shadow: 0 0 10px #00ff00;
         }
+        .upload-section {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px dashed #00ff00;
+            background: rgba(0, 255, 0, 0.05);
+        }
+        .upload-section:hover {
+            background: rgba(0, 255, 0, 0.1);
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .upload-label {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #000;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        .upload-label:hover {
+            background: #00ff00;
+            color: #000;
+            box-shadow: 0 0 10px #00ff00;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Vídeos Gravados</h1>
+        <div class="upload-section">
+            <form action="/upload_video" method="post" enctype="multipart/form-data">
+                <label class="upload-label" for="video">
+                    Selecionar Vídeo
+                    <input type="file" id="video" name="video" accept="video/*" required>
+                </label>
+                <br>
+                <button type="submit">Enviar Vídeo</button>
+            </form>
+        </div>
         <div class="gallery">
             {% for video in videos %}
             <div class="video-card">
                 <video controls>
-                    <source src="/uploads/videos/{{ video }}" type="video/webm">
-                    Seu navegador não suporta vídeos.
+                    <source src="/uploads/videos/{{ video }}" type="video/mp4">
+                    Seu navegador não suporta o elemento de vídeo.
                 </video>
                 <div class="video-info">{{ video }}</div>
             </div>
