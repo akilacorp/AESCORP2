@@ -11,67 +11,171 @@
             background: #000;
             color: #00ff00;
             font-family: 'Share Tech Mono', monospace;
+            min-height: 100vh;
         }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
         }
-        h1 {
+
+        .header {
             text-align: center;
             margin-bottom: 30px;
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-bottom: 1px solid #00ff00;
+            z-index: 100;
         }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px #00ff00;
+        }
+
+        .warning {
+            text-align: center;
+            color: #ff0000;
+            background: rgba(255, 0, 0, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 600px;
+            border: 1px solid #ff0000;
+            font-size: 1.1em;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 5px #ff0000; }
+            50% { box-shadow: 0 0 20px #ff0000; }
+            100% { box-shadow: 0 0 5px #ff0000; }
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #000;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            text-decoration: none;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .button:hover {
+            background: #00ff00;
+            color: #000;
+            box-shadow: 0 0 15px #00ff00;
+        }
+
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
             padding: 20px;
         }
+
         .video-card {
             background: #111;
             border: 1px solid #00ff00;
             padding: 10px;
             border-radius: 5px;
+            transition: transform 0.3s ease;
         }
-        video {
+
+        .video-card:hover {
+            transform: scale(1.02);
+        }
+
+        .video-card video {
             width: 100%;
-            height: auto;
+            border-radius: 3px;
             margin-bottom: 10px;
-        }
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
             background: #000;
-            color: #00ff00;
-            border: 1px solid #00ff00;
-            text-decoration: none;
-            margin: 10px;
-            cursor: pointer;
-            font-family: 'Share Tech Mono', monospace;
         }
-        .button:hover {
-            background: #00ff00;
-            color: #000;
-            box-shadow: 0 0 10px #00ff00;
-        }
-        .controls {
-            text-align: center;
-            margin: 20px 0;
-        }
+
         .download-btn {
             width: 100%;
             text-align: center;
-            margin: 5px 0;
         }
+
         .download-btn .button {
-            width: 80%;
+            width: 90%;
             margin: 0;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                padding: 10px;
+            }
+
+            .warning {
+                font-size: 1em;
+                margin: 15px 10px;
+            }
+
+            .button {
+                padding: 10px 20px;
+                min-width: 130px;
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .button {
+                width: 100%;
+            }
+
+            .warning {
+                font-size: 0.9em;
+                padding: 10px;
+            }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>Vídeos Hackeados</h1>
+        <div class="header">
+            <h1>Vídeos Hackeados</h1>
+            <div class="warning">
+                ⚠️ AVISO: Todos os vídeos são automaticamente apagados após 12 horas! ⚠️
+            </div>
+            <div class="controls">
+                <button onclick="location.reload()" class="button">Recarregar 🔄</button>
+                <a href="/" class="button">Voltar 🏠</a>
+            </div>
+        </div>
 
         <div class="gallery">
             {% for video in videos %}
@@ -87,11 +191,6 @@
                 </div>
             </div>
             {% endfor %}
-        </div>
-
-        <div class="controls">
-            <button onclick="location.reload()" class="button">Recarregar</button>
-            <a href="/" class="button">Voltar</a>
         </div>
     </div>
 </body>
