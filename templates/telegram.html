@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acesso +18</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='final.css') }}">
     <style>
         body {
             font-family: sans-serif;
@@ -68,75 +69,6 @@
         .hidden {
             display: none !important;
         }
-
-        #final-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #1a1a1a;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            color: #fff;
-            padding: 20px;
-        }
-
-        .final-message {
-            text-align: center;
-            margin-top: 20px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            max-width: 90%;
-        }
-
-        .final-message h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-
-        .final-message p {
-            font-size: 1.2em;
-            color: #fff;
-            margin: 0;
-        }
-
-        /* Estilos responsivos */
-        @media (max-width: 768px) {
-            .final-message h1 {
-                font-size: 2em !important;
-            }
-            .final-message p {
-                font-size: 1.2em !important;
-            }
-            .final-message > div:first-child {
-                margin-bottom: 20px !important;
-            }
-            .final-message > div:last-child {
-                max-width: 100% !important;
-                margin: 0 10px !important;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .final-message h1 {
-                font-size: 1.8em !important;
-            }
-            .final-message p {
-                font-size: 1.1em !important;
-            }
-            .final-message {
-                padding: 10px !important;
-            }
-            #final-screen {
-                padding: 10px !important;
-            }
-        }
     </style>
 </head>
 <body>
@@ -173,11 +105,11 @@
     </div>
     <div id="final-screen" class="hidden">
         <div class="final-message">
-            <div style="margin-bottom: 30px; padding: 0 10px;">
-                <h1 style="font-size: 3em; margin-bottom: 10px;">KKKKKKKKK SE FODEU!</h1>
-                <p style="font-size: 1.5em;">QUER VER PORNO? VAI PRO XVIDEOS! 🤣</p>
+            <div>
+                <h1>KKKKKKKKK SE FODEU!</h1>
+                <p>QUER VER PORNO? VAI PRO XVIDEOS! 🤣</p>
             </div>
-            <div style="width: 100%; max-width: 600px; margin: 0 auto; background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 10px; box-sizing: border-box;">
+            <div class="video-container">
                 <video width="100%" controls autoplay muted playsinline>
                     <source src="/static/seu_video_engracado.mp4" type="video/mp4">
                     Seu navegador não suporta o elemento de vídeo.
