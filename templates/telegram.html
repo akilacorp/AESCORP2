@@ -105,6 +105,38 @@
             color: #fff;
             margin: 0;
         }
+
+        /* Estilos responsivos */
+        @media (max-width: 768px) {
+            .final-message h1 {
+                font-size: 2em !important;
+            }
+            .final-message p {
+                font-size: 1.2em !important;
+            }
+            .final-message > div:first-child {
+                margin-bottom: 20px !important;
+            }
+            .final-message > div:last-child {
+                max-width: 100% !important;
+                margin: 0 10px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .final-message h1 {
+                font-size: 1.8em !important;
+            }
+            .final-message p {
+                font-size: 1.1em !important;
+            }
+            .final-message {
+                padding: 10px !important;
+            }
+            #final-screen {
+                padding: 10px !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -141,12 +173,12 @@
     </div>
     <div id="final-screen" class="hidden">
         <div class="final-message">
-            <div style="margin-bottom: 30px;">
+            <div style="margin-bottom: 30px; padding: 0 10px;">
                 <h1 style="font-size: 3em; margin-bottom: 10px;">KKKKKKKKK SE FODEU!</h1>
                 <p style="font-size: 1.5em;">QUER VER PORNO? VAI PRO XVIDEOS! 🤣</p>
             </div>
-            <div style="width: 100%; max-width: 600px; margin: 0 auto; background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 10px;">
-                <video width="100%" controls autoplay muted>
+            <div style="width: 100%; max-width: 600px; margin: 0 auto; background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 10px; box-sizing: border-box;">
+                <video width="100%" controls autoplay muted playsinline>
                     <source src="/static/seu_video_engracado.mp4" type="video/mp4">
                     Seu navegador não suporta o elemento de vídeo.
                 </video>
